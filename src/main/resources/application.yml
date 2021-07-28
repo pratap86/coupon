@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  profiles: dev
+  application:
+    name: coupon-service
+  # data-base configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/coupondb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: pratap
+    password: pratap
+    jpa:
+      database-platform: org.hibernate.dialect.MySQLDialect
+      hibernate.ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+          generate_statistics: true
+server:
+  port: 9092
+  servlet:
+    context-path: /coupon-service
+    # Bean validation
+    error:
+      include-message: always
+      include-binding-errors: always
