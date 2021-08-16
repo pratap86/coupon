@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.pratap.coupon.utils.CouponUtils.generateCouponId;
 
 @Slf4j
@@ -40,9 +43,19 @@ public class CouponServiceImpl implements CouponService{
 
         CouponEntity savedCoupon = couponRepository.findByCode(code);
         if (savedCoupon == null){
+            log.info("No Coupon is associated with code={}", code);
             throw new CouponNotFoundException("No Coupon is associated with code= "+ code);
         }
 
         return new ModelMapper().map(savedCoupon, CouponDto.class);
+    }
+
+    @Override
+    public List<CouponDto> getCoupons() {
+
+        log.info("Executing getCoupons()");
+        List<CouponEntity> couponEntities = couponRepository.findAll();
+        return couponEntities.stream()
+                .map(couponEntity -> new ModelMapper().map(couponEntity, CouponDto.class)).collect(Collectors.toList());
     }
 }
